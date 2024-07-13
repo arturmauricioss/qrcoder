@@ -282,10 +282,11 @@ img {
                         <input type="file" id="icon" class="file-input" accept="image/*">
                     </div>
                     <button type="submit">Gerar QR Code</button>
-                    <button id="testButton" type="button">Abrir QR Code</button>
-                    <video id="video" style="display: none;"></video>
-<canvas id="cameraCanvas" style="display: none;"></canvas>
-<button id="cameraButton">Usar Câmera</button>
+                    <button id="testButton" type="button">Abrir QR Code</button>                    
+                    <button id="cameraButton">Usar Câmera</button>
+
+                    <video id="video" style="display: none; width: 100%; max-width: 600px;"></video>
+                    <canvas id="cameraCanvas" style="display: none;"></canvas>
                 </div>
             </form>
             
@@ -457,38 +458,44 @@ img {
             const video = document.getElementById('video');
             const canvas = document.getElementById('cameraCanvas');
             const context = canvas.getContext('2d');
-    
+
             // Solicita acesso à câmera
             navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } })
             .then(stream => {
                 video.srcObject = stream;
                 video.setAttribute('playsinline', true); // Requerido para iOS
                 video.play();
-    
+
                 // Função para capturar o vídeo e processar
                 function processVideo() {
-                    if (video.videoWidth > 0) {
+                    if (video.readyState === video.HAVE_ENOUGH_DATA) {
                         canvas.width = video.videoWidth;
                         canvas.height = video.videoHeight;
                         context.drawImage(video, 0, 0, canvas.width, canvas.height);
                         const imageData = context.getImageData(0, 0, canvas.width, canvas.height);
                         const decodedQRCode = jsQR(imageData.data, canvas.width, canvas.height);
-    
+
                         if (decodedQRCode) {
                             // QR Code detectado
+                            context.strokeStyle = "red";
+                            context.lineWidth = 4;
+                            context.strokeRect(decodedQRCode.location.topLeftCorner.x, decodedQRCode.location.topLeftCorner.y,
+                                decodedQRCode.location.bottomRightCorner.x - decodedQRCode.location.topLeftCorner.x,
+                                decodedQRCode.location.bottomRightCorner.y - decodedQRCode.location.topLeftCorner.y);
                             window.open(decodedQRCode.data, '_blank');
                             // Para o vídeo e remove o elemento da câmera
                             video.srcObject.getTracks().forEach(track => track.stop());
                             video.remove();
                             canvas.remove();
                         } else {
-                            requestAnimationFrame(processVideo); // Continua a captura
+                            // Continua a captura
+                            requestAnimationFrame(processVideo);
                         }
                     } else {
                         requestAnimationFrame(processVideo);
                     }
                 }
-    
+
                 requestAnimationFrame(processVideo); // Inicia o processamento
             })
             .catch(error => {
@@ -496,9 +503,8 @@ img {
                 alert('Erro ao acessar a câmera.');
             });
         }
-    
+        
         document.getElementById('cameraButton').addEventListener('click', startCamera);
     </script>
-    
 </body>
 </html>
