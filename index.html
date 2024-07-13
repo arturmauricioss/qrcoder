@@ -452,9 +452,9 @@ img {
                 window.URL.revokeObjectURL(url);
             });
         }
-    
-        // Função para iniciar a câmera e ler QR Code
-        function startCamera() {
+        
+      // Função para iniciar a câmera e ler QR Code
+      function startCamera() {
             const video = document.getElementById('video');
             const canvas = document.getElementById('cameraCanvas');
             const context = canvas.getContext('2d');
@@ -465,6 +465,8 @@ img {
                 video.srcObject = stream;
                 video.setAttribute('playsinline', true); // Requerido para iOS
                 video.play();
+                video.style.display = 'block';
+                canvas.style.display = 'block';
 
                 // Função para capturar o vídeo e processar
                 function processVideo() {
@@ -485,8 +487,8 @@ img {
                             window.open(decodedQRCode.data, '_blank');
                             // Para o vídeo e remove o elemento da câmera
                             video.srcObject.getTracks().forEach(track => track.stop());
-                            video.remove();
-                            canvas.remove();
+                            video.style.display = 'none';
+                            canvas.style.display = 'none';
                         } else {
                             // Continua a captura
                             requestAnimationFrame(processVideo);
@@ -500,10 +502,9 @@ img {
             })
             .catch(error => {
                 console.error('Erro ao acessar a câmera:', error);
-                alert('Erro ao acessar a câmera.');
+                alert('Erro ao acessar a câmera');
             });
         }
-        
         document.getElementById('cameraButton').addEventListener('click', startCamera);
     </script>
 </body>
