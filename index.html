@@ -6,228 +6,503 @@
     <link rel="icon" type="image/png" href="media/img/logocolorido.png">
     <title>QR Code</title>
     <style>
-        :root {
-            --c11: #226d43;
-            --c22: #6a0dad;
-            --c33: #1e90ff;
-            --c44: #000000;
-            --c55: #ffffff;
-            --c66: #333333;
-            --c77: #999999;
-            --c88: #88dd88;
-        }
+:root {
+    --c11: #226d43;
+    --c22: #6a0dad;
+    --c33: #1e90ff;
+    --c44: #000000;
+    --c55: #ffffff;
+    --c66: #333333;
+    --c77: #999999;
+    --c88: #88dd88;
+}
 
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #eee;
-            color: var(--c22);
-            margin: 0;
-            padding: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            text-align: center;
-        }
-        
-        h1 {
-            color: var(--c22); /* Roxo escuro */
-            margin: 10px 0;
-            text-shadow: 0px 0px 1px #00000055;
-        }
-        
-        label {
-            color: #225522;
-            text-shadow: 0px 0px 1px #00000055;
-            font-size: 1.2em;
-        }
-        
-        form {
+body {
+    font-family: Arial, sans-serif;
+    background-color: #eee;
+    color: var(--c22);
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    min-height: 100vh;
+    position: relative;
+    text-align: center;
+}
+
+.title-container {
+    text-align: center;
+    margin-top: 20px;
+}
+#avallonTitle{
+    color: #125b12;
+}
+#help{
+    color: #125b12;
+    cursor: pointer;
+}
+h1 {
+    color: var(--c22); /* Roxo escuro */
+    margin: 10px 0;
+    text-shadow: 0px 0px 1px #00000055;
+}
+
+p {
+    text-shadow: 0px 0px 1px #00000055;
+    
+}
+
+label {
+    color: #225522;
+    text-shadow: 0px 0px 1px #00000055;
+    font-size: 1.2em;
+}
+
+form {
+    background-color: #cfc;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    display: inline-block;
+    padding: 20px;
+    border-bottom: 1px solid var(--c22);
+    border-right: 2px solid var(--c22);
+}
+
+input {
+    padding: 10px;
+    font-size: 16px;
+    width: 100%;
+    max-width: 300px;
+    border: 2px solid #125b12; /* Verde */
+    border-radius: 4px;
+    box-sizing: border-box;
+    margin-top: 10px;
+}
+
+input:focus {
+    border-color: #4a148c; /* Roxo escuro */
+    outline: none; /* Remove o contorno padrão do navegador */
+}
+
+.file-input-container {
+    position: relative;
+    width: 100%;
+    max-width: 250px;
+    margin-top: 0px;
+}
+
+.file-input {
+    position: absolute;
+    left: 0;
+    top: 0;
+    opacity: 0;
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+}
+
+.file-label {
+    display: inline-block;
+    padding: 10px;
+    background-color: #125b12; /* Verde */
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    cursor: pointer;
+    text-align: center;
+    width: 150px;
+    box-sizing: border-box;
+    margin-bottom: 10px; /* Espaço abaixo do botão "Escolher ícone" */
+}
+
+
+.file-label:hover {
+    background-color: #7b1fa2; /* Verde mais escuro */
+}
+button {
+    background-color: #125b12; /* Verde */
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    margin-top: 10px;
+    margin-bottom: 0px;
+    transition: background-color 0.3s ease;
+    max-width: 250px;
+}
+
+button:hover {
+    background-color: #7b1fa2; /* Roxo mais escuro */
+}
+
+img {
+    margin-top: 20px;
+    border: 2px solid #4caf50; /* Verde */
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    max-width: 100%;
+    height: auto;
+}
+
+.hidden {
+    display: none;
+}
+
+.link-preview {
+    color: #2196F3; /* Azul claro para links */
+    font-size: 16px;
+    font-weight: bold;
+    word-wrap: break-word;
+    margin-top: 10px;
+}
+
+.link-preview a {
+    color: #2196F3;
+    text-decoration: none;
+}
+
+.link-preview a:hover {
+    
+}
+
+@media (max-width: 300px) {
+    .container {
+        flex-direction: column;
+        align-items: center;
+    }
+    form {
+        padding: 15px;
+        width: 90%;
+    }
+    input, button, .file-label {
+        width: 100%;
+    }
+}
+
+.container {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 10px;
+    width: 90%;
+    max-width: 1200px;
+    margin: 0 auto;
+    flex-wrap: wrap;
+}
+
+.one, .two {
+    flex: 1;
+    margin: 10px;
+    min-width: 200px;
+}
+
+        .help-section {
             background-color: #cfc;
+            border: 1px solid #ccc;
             border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            display: inline-block;
             padding: 20px;
+            margin: 20px 0;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 90%;
+            max-width: 1200px;
             border-bottom: 1px solid var(--c22);
             border-right: 2px solid var(--c22);
         }
-        
-        input {
-            padding: 10px;
-            font-size: 16px;
-            width: 100%;
-            max-width: 300px;
-            border: 2px solid #125b12; /* Verde */
-            border-radius: 4px;
-            box-sizing: border-box;
-            margin-top: 10px;
-        }
-        
-        input:focus {
-            border-color: #4a148c; /* Roxo escuro */
-            outline: none; /* Remove o contorno padrão do navegador */
-        }
-
-        button {
-            background-color: #125b12; /* Verde */
-            color: white;
-            border: none;
-            border-radius: 4px;
-            padding: 10px 20px;
-            font-size: 16px;
-            cursor: pointer;
-            margin-top: 10px;
+        .help-section p {
+            color: var(--c44);
             margin-bottom: 10px;
-            transition: background-color 0.3s ease;
-        }
-        
-        button:hover {
-            background-color: #7b1fa2; /* Verde mais escuro */
+            font-size: 1.5em;
+            text-decoration: underline solid var(--c22);
         }
 
-        img {
-            margin-top: 20px;
-            border: 2px solid #4caf50; /* Verde */
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            max-width: 100%;
-            height: auto;
-        }
-        
-        .hidden {
-            display: none;
+        .help-section ul {
+            list-style: disc;
+            padding-left: 20px;
+            text-align: left;
         }
 
-        .link-preview {
-            color: #2196F3; /* Azul claro para links */
-            font-size: 16px;
-            font-weight: bold;
-            word-wrap: break-word;
-            margin-top: 10px;
+        .help-section ul li {
+            margin-bottom: 10px;
+            color: var(--c66);
+            font-weight: 600;
+            text-align: justify;
         }
-        
-        .link-preview a {
-            color: #2196F3;
-            text-decoration: none;
-        }
-        
-        .link-preview a:hover {
-            text-decoration: underline;
-        }
+        .button-container {
+    display: flex;
+    flex-direction: column; /* Empilha os botões verticalmente */
+    align-items: center; /* Centraliza os botões horizontalmente */
+    margin-top: 10px; /* Espaço acima dos botões */
+}
 
-        @media (max-width: 285px) {
-            form {
-                margin: 10px 2%;
-                padding: 10px 1%;
+.button-container button, .file-label {
+    margin: 5px 0; /* Espaço entre os botões */
+    width: 100%; /* Faz com que os botões ocupem a largura total do contêiner pai */
+    max-width: 250px; /* Define uma largura máxima para os botões */
+}
 
-            }
-            input, button {
-                width: 80%;
-            }
-            .container {
-                flex-direction: column;
-                align-items: center;
-            }
-        }
+.button-container button {
+    background-color: #125b12; /* Verde */
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
 
-        .container {
-            display: flex;
-            flex-direction: row;
-            justify-content: center;
-            align-items: flex-start;
-            gap: 20px;
-            width: 80%;
-            max-width: 1200px;
-            margin: 0 auto;
-            flex-wrap: wrap;
-        }
-
-        .one, .two {
-            flex: 1;
-            margin: 10px;
-            min-width: 300px;
-        }
+.button-container button:hover {
+    background-color: #7b1fa2; /* Roxo mais escuro */
+}
     </style>
 </head>
 <body>
+    <div class="title-container">
+        <h1 id="avallonTitle">Gerador de QR Code</h1>
+    </div>
     <div class="container">
         <div class="one">
-            <h1>Avallon QR</h1>
+            <h1>Avallon QR
+                <!-- <a href="https://arturmauricioss.github.io/" target="_blank">
+                <span id="help">?</span></a> -->
+            </h1>
             <form id="qrForm">
                 <label for="link" title="Coloque um link no campo de texto abaixo">Insira o link:</label><br>
-                <input type="text" id="link" name="link" required title="Digite o link para gerar seu QR Code"><br><br>
-                <button type="submit">Gerar QR Code</button>
-                <div id="linkPreview" class="link-preview"></div> <!-- Área para exibir o link formatado -->
+                <input type="text" id="link" name="link" required placeholder="https://exemplo.com">
+                <div class="file-input-container">
+                    <label class="file-label" for="icon">Escolher ícone</label>
+                    <input type="file" id="icon" class="file-input" accept="image/*">
+                </div>
+                <div class="button-container">
+                    <button type="submit">Gerar QR Code</button>
+                    <button id="testButton" type="button">Abrir QR Code</button>
+                    <button id="cameraButton">Usar Câmera</button>
+                </div>
             </form>
+            
         </div>
         <div class="two">
             <div id="qrCodeContainer" class="hidden">
-                <img id="qrCodeImage" alt="QR Code">
+                <h1>Seu QR Code</h1>
+                
+                <canvas id="qrCanvas"></canvas>
                 <p>Teste seu QR Code antes de Baixar ou Compartilhar</p>
                 <button id="downloadButton" class="hidden">Baixar</button>
                 <button id="shareButton" class="hidden">Compartilhar</button>
+
                 <br>
                 <br>
                 <p>QR Code gerado utilizando <a href="http://goqr.me/api/doc/">API</a></p>
             </div>
         </div>
     </div>
+    <div class="help-section" id="helpSection">
+        <h2>Como Utilizar</h2>
+        <ul>
+            <li>Insira o link que você deseja transformar em um QR Code no campo de texto abaixo de "Insira um link".</li>
+            <li><span style="color:var(--c22)">Opcional:</span> escolha um ícone para personalizar o seu QR Code clicando em "Personalizar". <span style="color:var(--c22)">Obs</span>.: Utilizar um ícone não deve afetar a leitura de seu QR Code, porém isso pode acontecer em casos em que as cores do ícone não forem contrastantes o sulficiente com as cores do QR Code, o leitor de QR Code desse modo pode confundir as cores do ícone e não fazer a leitura adequadamente.</li>
+            <li>Clique no botão "Gerar QR Code" para criar o seu QR Code personalizado.</li>
+            <li>O QR Code gerado será exibido na tela. Você poderá baixá-lo ou compartilhá-lo gratuitamente usando os botões apropriados.</li>
+            <li>Verifique se o QR Code está funcionando corretamente antes de usá-lo.</li>
+            <li>A transformação do link em QR Code é feita pela API: <span style="color:var(--c22)">QR Code Generator</span>, e sua documentação está disponível em <a href="https://goqr.me/api/doc/">https://goqr.me/api/doc/</a></li>
+        </ul>
+    </div>
+    <input type="file" id="uploadFile" class="hidden" accept="image/*">
+    <script src="https://cdn.jsdelivr.net/npm/qrcode@1.4.4/build/qrcode.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.1/dist/jsqr.min.js"></script>
+    
     <script>
         document.getElementById('qrForm').addEventListener('submit', function(event) {
             event.preventDefault();
             
+            generateQRCode(); // Gera QR Code quando o formulário é enviado
+        });
+    
+        // Função para gerar QR Code
+        function generateQRCode() {
             const link = document.getElementById('link').value;
+            const iconFile = document.getElementById('icon').files[0];
             const qrCodeContainer = document.getElementById('qrCodeContainer');
-            const qrCodeImage = document.getElementById('qrCodeImage');
+            const qrCanvas = document.getElementById('qrCanvas');
             const downloadButton = document.getElementById('downloadButton');
             const shareButton = document.getElementById('shareButton');
-
-            // URL da API para gerar QR Code
-            const qrCodeUrl = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodeURIComponent(link)}`;
-            
-            // Atualiza a imagem do QR Code
-            qrCodeImage.src = qrCodeUrl;
-            qrCodeImage.alt = 'QR Code';
-
-            // Torna os botões visíveis
-            qrCodeContainer.classList.remove('hidden');
-            downloadButton.classList.remove('hidden');
-            shareButton.classList.remove('hidden');
-
-            // Configura o botão de download para acionar o download automaticamente
-            downloadButton.addEventListener('click', function() {
-                fetch(qrCodeUrl)
-                    .then(response => response.blob())
-                    .then(blob => {
-                        // Cria um nome de arquivo baseado no link
-                        const linkText = link.replace(/[^a-z0-9]/gi, '_').toLowerCase();
-                        const fileName = `Avallon_QR_Code_${linkText}.png`;
-
-                        const url = window.URL.createObjectURL(blob);
-                        const a = document.createElement('a');
-                        a.href = url;
-                        a.download = fileName;
-                        document.body.appendChild(a);
-                        a.click();
-                        a.remove();
-                        window.URL.revokeObjectURL(url);
-                    })
-                    .catch(console.error);
-            });
-
-            // Configura o botão de compartilhamento
-            shareButton.addEventListener('click', function() {
-                if (navigator.share) {
-                    navigator.share({
-                        title: 'QR Code',
-                        text: 'Aqui está o QR Code gerado!',
-                        url: qrCodeUrl
-                    }).catch(console.error);
-                } else {
-                    alert('Compartilhamento não suportado neste navegador.');
+    
+            // Remove previous event listeners to avoid multiple downloads
+            downloadButton.removeEventListener('click', downloadQRCode);
+    
+            QRCode.toCanvas(qrCanvas, link, { width: 200, margin: 1 }, function (error) {
+                if (error) console.error(error);
+    
+                if (iconFile) {
+                    const ctx = qrCanvas.getContext('2d');
+                    const img = new Image();
+    
+                    img.onload = function () {
+                        const iconSize = qrCanvas.width / 5;
+                        const iconX = (qrCanvas.width - iconSize) / 2;
+                        const iconY = (qrCanvas.height - iconSize) / 2;
+                        ctx.drawImage(img, iconX, iconY, iconSize, iconSize);
+                    }
+    
+                    img.src = URL.createObjectURL(iconFile);
                 }
+    
+                qrCodeContainer.classList.remove('hidden');
+                downloadButton.classList.remove('hidden');
+                shareButton.classList.remove('hidden');
+    
+                // Add new event listener for the download button
+                downloadButton.addEventListener('click', downloadQRCode);
+    
+                shareButton.addEventListener('click', function() {
+                    qrCanvas.toBlob(function(blob) {
+                        const url = window.URL.createObjectURL(blob);
+                        if (navigator.share) {
+                            navigator.share({
+                                title: 'QR Code',
+                                text: 'Aqui está o QR Code gerado!',
+                                files: [new File([blob], 'qrcode.png', { type: blob.type })]
+                            }).catch(console.error);
+                        } else {
+                            alert('Compartilhamento não suportado neste navegador.');
+                        }
+                        window.URL.revokeObjectURL(url);
+                    });
+                });
             });
+        }
+    
+        // Atualiza QR Code em tempo real enquanto o usuário digita
+        document.getElementById('link').addEventListener('input', generateQRCode);
+    
+        document.getElementById('icon').addEventListener('change', function() {
+            const fileLabel = document.querySelector('.file-label');
+            const file = this.files[0];
+    
+            if (file) {
+                const formattedName = formatFileName(file.name);
+                fileLabel.textContent = formattedName;
+            } else {
+                fileLabel.textContent = 'Escolher ícone';
+            }
         });
+    
+        function formatFileName(fileName) {
+            const maxLength = 20; // Número máximo de caracteres visíveis
+            if (fileName.length > maxLength) {
+                const start = fileName.substring(0, 7);
+                const end = fileName.substring(fileName.length - 4);
+                return `${start}..${end}`;
+            }
+            return fileName;
+        }
+    
+        document.getElementById('testButton').addEventListener('click', function() {
+            document.getElementById('uploadFile').click();
+        });
+    
+        document.getElementById('uploadFile').addEventListener('change', function(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const formData = new FormData();
+                formData.append('file', file);
+    
+                fetch('https://api.qrserver.com/v1/read-qr-code/', {
+                    method: 'POST',
+                    body: formData
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data && data[0] && data[0].symbol && data[0].symbol[0] && data[0].symbol[0].data) {
+                        const qrCodeData = data[0].symbol[0].data;
+                        window.open(qrCodeData, '_blank'); // Abre o link em uma nova guia
+                    } else {
+                        alert('Nenhum QR Code detectado na imagem.');
+                    }
+                })
+                .catch(error => {
+                    console.error('Erro ao ler o QR Code:', error);
+                    alert('Erro ao tentar ler o QR Code.');
+                });
+            }
+        });
+    
+        function downloadQRCode() {
+            const qrCanvas = document.getElementById('qrCanvas');
+            const link = document.getElementById('link').value.replace(/[^a-z0-9]/gi, '_').toLowerCase();
+            const fileName = `qrcode_${link}.png`;
+    
+            qrCanvas.toBlob(function(blob) {
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = fileName;
+                document.body.appendChild(a);
+                a.click();
+                a.remove();
+                window.URL.revokeObjectURL(url);
+            });
+        }
+    
+        // Função para iniciar a câmera e ler QR Code
+        function startCamera() {
+            const video = document.createElement('video');
+            const canvas = document.createElement('canvas');
+            const context = canvas.getContext('2d');
+            const qrCodeContainer = document.getElementById('qrCodeContainer');
+            const cameraButton = document.getElementById('cameraButton');
+    
+            document.body.appendChild(video);
+            document.body.appendChild(canvas);
+    
+            // Solicita acesso à câmera
+            navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } })
+            .then(stream => {
+                video.srcObject = stream;
+                video.setAttribute('playsinline', true); // Requerido para iOS
+                video.play();
+    
+                // Função para capturar o vídeo e processar
+                function processVideo() {
+                    if (video.videoWidth > 0) {
+                        canvas.width = video.videoWidth;
+                        canvas.height = video.videoHeight;
+                        context.drawImage(video, 0, 0, canvas.width, canvas.height);
+                        const imageData = context.getImageData(0, 0, canvas.width, canvas.height);
+                        const decodedQRCode = jsQR(imageData.data, canvas.width, canvas.height);
+    
+                        if (decodedQRCode) {
+                            // QR Code detectado
+                            window.open(decodedQRCode.data, '_blank');
+                            // Para o vídeo e remove os elementos da câmera
+                            video.srcObject.getTracks().forEach(track => track.stop());
+                            video.remove();
+                            canvas.remove();
+                        } else {
+                            requestAnimationFrame(processVideo); // Continua a captura
+                        }
+                    } else {
+                        requestAnimationFrame(processVideo);
+                    }
+                }
+    
+                requestAnimationFrame(processVideo); // Inicia o processamento
+            })
+            .catch(error => {
+                console.error('Erro ao acessar a câmera:', error);
+                alert('Erro ao acessar a câmera.');
+            });
+        }
+    
+        document.getElementById('cameraButton').addEventListener('click', startCamera);
     </script>
+    
+    
 </body>
 </html>
