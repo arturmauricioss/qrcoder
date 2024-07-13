@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" href="media/img/logocolorido.png">
+    <title>QR Code</title>
+    <style>
+        :root {
+            --c11: #226d43;
+            --c22: #6a0dad;
+            --c33: #1e90ff;
+            --c44: #000000;
+            --c55: #ffffff;
+            --c66: #333333;
+            --c77: #999999;
+            --c88: #88dd88;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #eee;
+            color: var(--c22);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            text-align: center;
+        }
+        
+        h1 {
+            color: var(--c22); /* Roxo escuro */
+            margin: 10px 0;
+            text-shadow: 0px 0px 1px #00000055;
+        }
+        
+        label {
+            color: #225522;
+            text-shadow: 0px 0px 1px #00000055;
+            font-size: 1.2em;
+        }
+        
+        form {
+            background-color: #cfc;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            display: inline-block;
+            padding: 20px;
+            border-bottom: 1px solid var(--c22);
+            border-right: 2px solid var(--c22);
+        }
+        
+        input {
+            padding: 10px;
+            font-size: 16px;
+            width: 100%;
+            max-width: 300px;
+            border: 2px solid #125b12; /* Verde */
+            border-radius: 4px;
+            box-sizing: border-box;
+            margin-top: 10px;
+        }
+        
+        input:focus {
+            border-color: #4a148c; /* Roxo escuro */
+            outline: none; /* Remove o contorno padrão do navegador */
+        }
+
+        button {
+            background-color: #125b12; /* Verde */
+            color: white;
+            border: none;
+            border-radius: 4px;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            margin-top: 10px;
+            margin-bottom: 10px;
+            transition: background-color 0.3s ease;
+        }
+        
+        button:hover {
+            background-color: #7b1fa2; /* Verde mais escuro */
+        }
+
+        img {
+            margin-top: 20px;
+            border: 2px solid #4caf50; /* Verde */
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            max-width: 100%;
+            height: auto;
+        }
+        
+        .hidden {
+            display: none;
+        }
+
+        .link-preview {
+            color: #2196F3; /* Azul claro para links */
+            font-size: 16px;
+            font-weight: bold;
+            word-wrap: break-word;
+            margin-top: 10px;
+        }
+        
+        .link-preview a {
+            color: #2196F3;
+            text-decoration: none;
+        }
+        
+        .link-preview a:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 285px) {
+            form {
+                margin: 10px 2%;
+                padding: 10px 1%;
+
+            }
+            input, button {
+                width: 80%;
+            }
+            .container {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+
+        .container {
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            align-items: flex-start;
+            gap: 20px;
+            width: 80%;
+            max-width: 1200px;
+            margin: 0 auto;
+            flex-wrap: wrap;
+        }
+
+        .one, .two {
+            flex: 1;
+            margin: 10px;
+            min-width: 300px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="one">
+            <h1>Avallon QR</h1>
+            <form id="qrForm">
+                <label for="link" title="Coloque um link no campo de texto abaixo">Insira o link:</label><br>
+                <input type="text" id="link" name="link" required title="Digite o link para gerar seu QR Code"><br><br>
+                <button type="submit">Gerar QR Code</button>
+                <div id="linkPreview" class="link-preview"></div> <!-- Área para exibir o link formatado -->
+            </form>
+        </div>
+        <div class="two">
+            <div id="qrCodeContainer" class="hidden">
+                <img id="qrCodeImage" alt="QR Code">
+                <p>Teste seu QR Code antes de Baixar ou Compartilhar</p>
+                <button id="downloadButton" class="hidden">Baixar</button>
+                <button id="shareButton" class="hidden">Compartilhar</button>
+            </div>
+        </div>
+    </div>
+    <script>
+        document.getElementById('qrForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            
+            const link = document.getElementById('link').value;
+            const qrCodeContainer = document.getElementById('qrCodeContainer');
+            const qrCodeImage = document.getElementById('qrCodeImage');
+            const downloadButton = document.getElementById('downloadButton');
+            const shareButton = document.getElementById('shareButton');
+
+            // URL da API para gerar QR Code
+            const qrCodeUrl = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodeURIComponent(link)}`;
+            
+            // Atualiza a imagem do QR Code
+            qrCodeImage.src = qrCodeUrl;
+            qrCodeImage.alt = 'QR Code';
+
+            // Torna os botões visíveis
+            qrCodeContainer.classList.remove('hidden');
+            downloadButton.classList.remove('hidden');
+            shareButton.classList.remove('hidden');
+
+            // Configura o botão de download para acionar o download automaticamente
+            downloadButton.addEventListener('click', function() {
+                fetch(qrCodeUrl)
+                    .then(response => response.blob())
+                    .then(blob => {
+                        const url = window.URL.createObjectURL(blob);
+                        const a = document.createElement('a');
+                        a.href = url;
+                        a.download = 'qrcode.png';
+                        document.body.appendChild(a);
+                        a.click();
+                        a.remove();
+                        window.URL.revokeObjectURL(url);
+                    })
+                    .catch(console.error);
+            });
+
+            // Configura o botão de compartilhamento
+            shareButton.addEventListener('click', function() {
+                if (navigator.share) {
+                    navigator.share({
+                        title: 'QR Code',
+                        text: 'Aqui está o QR Code gerado!',
+                        url: qrCodeUrl
+                    }).catch(console.error);
+                } else {
+                    alert('Compartilhamento não suportado neste navegador.');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
