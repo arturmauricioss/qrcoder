@@ -196,10 +196,14 @@
                 fetch(qrCodeUrl)
                     .then(response => response.blob())
                     .then(blob => {
+                        // Cria um nome de arquivo baseado no link
+                        const linkText = link.replace(/[^a-z0-9]/gi, '_').toLowerCase();
+                        const fileName = `Avallon_QR_Code_${linkText}.png`;
+
                         const url = window.URL.createObjectURL(blob);
                         const a = document.createElement('a');
                         a.href = url;
-                        a.download = 'qrcode.png';
+                        a.download = fileName;
                         document.body.appendChild(a);
                         a.click();
                         a.remove();
