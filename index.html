@@ -90,7 +90,7 @@ input:focus {
     position: relative;
     width: 100%;
     max-width: 250px;
-    margin-top: 0px;
+
 }
 
 .file-input {
@@ -115,7 +115,7 @@ input:focus {
     text-align: center;
     width: 150px;
     box-sizing: border-box;
-    margin-bottom: 10px; /* Espaço abaixo do botão "Escolher ícone" */
+   /* Espaço abaixo do botão "Escolher ícone" */
 }
 
 
@@ -275,14 +275,17 @@ img {
             <form id="qrForm">
                 <label for="link" title="Coloque um link no campo de texto abaixo">Insira o link:</label><br>
                 <input type="text" id="link" name="link" required placeholder="https://exemplo.com">
-                <div class="file-input-container">
-                    <label class="file-label" for="icon">Escolher ícone</label>
-                    <input type="file" id="icon" class="file-input" accept="image/*">
-                </div>
+
                 <div class="button-container">
+                    <div class="file-input-container">
+                        <label class="file-label" for="icon">Escolher ícone</label>
+                        <input type="file" id="icon" class="file-input" accept="image/*">
+                    </div>
                     <button type="submit">Gerar QR Code</button>
                     <button id="testButton" type="button">Abrir QR Code</button>
-                    <button id="cameraButton">Usar Câmera</button>
+                    <video id="video" style="display: none;"></video>
+<canvas id="cameraCanvas" style="display: none;"></canvas>
+<button id="cameraButton">Usar Câmera</button>
                 </div>
             </form>
             
@@ -320,7 +323,6 @@ img {
     <script>
         document.getElementById('qrForm').addEventListener('submit', function(event) {
             event.preventDefault();
-            
             generateQRCode(); // Gera QR Code quando o formulário é enviado
         });
     
@@ -452,14 +454,9 @@ img {
     
         // Função para iniciar a câmera e ler QR Code
         function startCamera() {
-            const video = document.createElement('video');
-            const canvas = document.createElement('canvas');
+            const video = document.getElementById('video');
+            const canvas = document.getElementById('cameraCanvas');
             const context = canvas.getContext('2d');
-            const qrCodeContainer = document.getElementById('qrCodeContainer');
-            const cameraButton = document.getElementById('cameraButton');
-    
-            document.body.appendChild(video);
-            document.body.appendChild(canvas);
     
             // Solicita acesso à câmera
             navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } })
@@ -480,7 +477,7 @@ img {
                         if (decodedQRCode) {
                             // QR Code detectado
                             window.open(decodedQRCode.data, '_blank');
-                            // Para o vídeo e remove os elementos da câmera
+                            // Para o vídeo e remove o elemento da câmera
                             video.srcObject.getTracks().forEach(track => track.stop());
                             video.remove();
                             canvas.remove();
@@ -502,7 +499,6 @@ img {
     
         document.getElementById('cameraButton').addEventListener('click', startCamera);
     </script>
-    
     
 </body>
 </html>
