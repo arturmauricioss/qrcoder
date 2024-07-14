@@ -461,12 +461,14 @@ img {
     navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } })
         .then(stream => {
             video.srcObject = stream;
-            video.setAttribute('playsinline', true); // Required to tell iOS safari we don't want fullscreen
+            video.setAttribute('playsinline', true); // Necessário para iOS Safari
             video.style.display = 'block';
             cameraCanvas.style.display = 'none';
 
             video.play();
             requestAnimationFrame(tick);
+        }).catch(err => {
+            console.error('Erro ao acessar a câmera: ', err);
         });
 
     function tick() {
@@ -475,7 +477,16 @@ img {
             cameraCanvas.height = video.videoHeight;
             cameraContext.drawImage(video, 0, 0, cameraCanvas.width, cameraCanvas.height);
 
+            // Adicione logs aqui para verificar o conteúdo do canvas
+            console.log('Video ReadyState:', video.readyState);
+            console.log('Canvas Width:', cameraCanvas.width);
+            console.log('Canvas Height:', cameraCanvas.height);
+
             const imageData = cameraContext.getImageData(0, 0, cameraCanvas.width, cameraCanvas.height);
+
+            // Adicione logs aqui para verificar o conteúdo da imagem
+            console.log('Image Data:', imageData.data);
+
             const code = jsQR(imageData.data, imageData.width, imageData.height);
 
             if (code) {
@@ -484,7 +495,9 @@ img {
                 drawLine(cameraContext, code.location.bottomRightCorner, code.location.bottomLeftCorner, "#FF3B58");
                 drawLine(cameraContext, code.location.bottomLeftCorner, code.location.topLeftCorner, "#FF3B58");
 
-                alert(`QR Code detected: ${code.data}`);
+                console.log('QR Code Detected:', code.data); // Adicione um log aqui para o QR Code detectado
+
+                alert(`QR Code detectado: ${code.data}`);
                 window.open(code.data, '_blank');
 
                 video.pause();
@@ -507,6 +520,7 @@ img {
         context.stroke();
     }
 }
+
 
         document.getElementById('cameraButton').addEventListener('click', startCamera);
     </script>
