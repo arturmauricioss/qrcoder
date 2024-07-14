@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" type="image/png" href="media/img/logocolorido.png">
     <title>QR Code</title>
+    
     <style>
 :root {
     --c11: #226d43;
@@ -261,6 +262,8 @@ img {
     background-color: #7b1fa2; /* Roxo mais escuro */
 }
     </style>
+        <script src="https://cdn.jsdelivr.net/npm/qrcode@1.4.4/build/qrcode.min.js"></script>
+        <script src="https://unpkg.com/html5-qrcode/minified/html5-qrcode.min.js"></script>
 </head>
 <body>
     <div class="title-container">
@@ -270,7 +273,7 @@ img {
     <p id="result">Nenhum QR Code detectado ainda.</p>
     <div class="container">
         <div class="one">
-            <h1>Avllon QR
+            <h1>Alon QR
                 <!-- <a href="https://arturmauricioss.github.io/" target="_blank">
                 <span id="help">?</span></a> -->
             </h1>
@@ -285,8 +288,10 @@ img {
                     </div>
                     <button type="submit">Gerar QR Code</button>
                     <button id="testButton" type="button">Abrir QR Code</button>                    
-                    <video id="preview" style="width: 100%; max-width: 600px;"></video>
-                    <button id="startCameraButton">Iniciar Câmera</button>
+                    <div id="reader" style="width: 100%; height: 300px;"></div>
+                    <p id="result">Nenhum QR Code detectado ainda.</p>
+                
+                    <button id="cameraButton">Iniciar Câmera</button>
                     
                 </div>
             </form>
@@ -319,17 +324,12 @@ img {
         </ul>
     </div>
     <input type="file" id="uploadFile" class="hidden" accept="image/*">
-    <script src="https://cdn.jsdelivr.net/npm/qrcode@1.4.4/build/qrcode.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.1/dist/jsqr.min.js"></script>
-    <script src="https://unpkg.com/html5-qrcode/minified/html5-qrcode.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/instascan@1.0.0/instascan.min.js"></script>
     <script>
         document.getElementById('qrForm').addEventListener('submit', function(event) {
             event.preventDefault();
             generateQRCode(); // Gera QR Code quando o formulário é enviado
         });
-    
-        // Função para gerar QR Code
+
         function generateQRCode() {
             const link = document.getElementById('link').value;
             const iconFile = document.getElementById('icon').files[0];
@@ -337,34 +337,32 @@ img {
             const qrCanvas = document.getElementById('qrCanvas');
             const downloadButton = document.getElementById('downloadButton');
             const shareButton = document.getElementById('shareButton');
-    
-            // Remove previous event listeners to avoid multiple downloads
+
             downloadButton.removeEventListener('click', downloadQRCode);
-    
+
             QRCode.toCanvas(qrCanvas, link, { width: 200, margin: 1 }, function (error) {
                 if (error) console.error(error);
-    
+
                 if (iconFile) {
                     const ctx = qrCanvas.getContext('2d');
                     const img = new Image();
-    
+
                     img.onload = function () {
                         const iconSize = qrCanvas.width / 5;
                         const iconX = (qrCanvas.width - iconSize) / 2;
                         const iconY = (qrCanvas.height - iconSize) / 2;
                         ctx.drawImage(img, iconX, iconY, iconSize, iconSize);
                     }
-    
+
                     img.src = URL.createObjectURL(iconFile);
                 }
-    
+
                 qrCodeContainer.classList.remove('hidden');
                 downloadButton.classList.remove('hidden');
                 shareButton.classList.remove('hidden');
-    
-                // Add new event listener for the download button
+
                 downloadButton.addEventListener('click', downloadQRCode);
-    
+
                 shareButton.addEventListener('click', function() {
                     qrCanvas.toBlob(function(blob) {
                         const url = window.URL.createObjectURL(blob);
@@ -382,14 +380,13 @@ img {
                 });
             });
         }
-    
-        // Atualiza QR Code em tempo real enquanto o usuário digita
+
         document.getElementById('link').addEventListener('input', generateQRCode);
-    
+
         document.getElementById('icon').addEventListener('change', function() {
             const fileLabel = document.querySelector('.file-label');
             const file = this.files[0];
-    
+
             if (file) {
                 const formattedName = formatFileName(file.name);
                 fileLabel.textContent = formattedName;
@@ -397,7 +394,7 @@ img {
                 fileLabel.textContent = 'Escolher ícone';
             }
         });
-    
+
         function formatFileName(fileName) {
             const maxLength = 20; // Número máximo de caracteres visíveis
             if (fileName.length > maxLength) {
@@ -407,42 +404,12 @@ img {
             }
             return fileName;
         }
-    
-        document.getElementById('testButton').addEventListener('click', function() {
-            document.getElementById('uploadFile').click();
-        });
-    
-        document.getElementById('uploadFile').addEventListener('change', function(event) {
-            const file = event.target.files[0];
-            if (file) {
-                const formData = new FormData();
-                formData.append('file', file);
-    
-                fetch('https://api.qrserver.com/v1/read-qr-code/', {
-                    method: 'POST',
-                    body: formData
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if (data && data[0] && data[0].symbol && data[0].symbol[0] && data[0].symbol[0].data) {
-                        const qrCodeData = data[0].symbol[0].data;
-                        window.open(qrCodeData, '_blank'); // Abre o link em uma nova guia
-                    } else {
-                        alert('Nenhum QR Code detectado na imagem.');
-                    }
-                })
-                .catch(error => {
-                    console.error('Erro ao ler o QR Code:', error);
-                    alert('Erro ao tentar ler o QR Code.');
-                });
-            }
-        });
-    
+
         function downloadQRCode() {
             const qrCanvas = document.getElementById('qrCanvas');
             const link = document.getElementById('link').value.replace(/[^a-z0-9]/gi, '_').toLowerCase();
             const fileName = `qrcode_${link}.png`;
-    
+
             qrCanvas.toBlob(function(blob) {
                 const url = window.URL.createObjectURL(blob);
                 const a = document.createElement('a');
@@ -454,75 +421,8 @@ img {
                 window.URL.revokeObjectURL(url);
             });
         }
-//         function startCamera() {
-//     const video = document.getElementById('video');
-//     const cameraCanvas = document.getElementById('cameraCanvas');
-//     const cameraContext = cameraCanvas.getContext('2d');
 
-//     navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } })
-//         .then(stream => {
-//             video.srcObject = stream;
-//             video.setAttribute('playsinline', true); // Necessário para iOS Safari
-//             video.style.display = 'block';
-//             cameraCanvas.style.display = 'none';
-
-//             video.play();
-//             requestAnimationFrame(tick);
-//         }).catch(err => {
-//             console.error('Erro ao acessar a câmera: ', err);
-//         });
-
-//     function tick() {
-//         if (video.readyState === video.HAVE_ENOUGH_DATA) {
-//             cameraCanvas.width = video.videoWidth;
-//             cameraCanvas.height = video.videoHeight;
-//             cameraContext.drawImage(video, 0, 0, cameraCanvas.width, cameraCanvas.height);
-
-//             // Adicione logs aqui para verificar o conteúdo do canvas
-//             console.log('Video ReadyState:', video.readyState);
-//             console.log('Canvas Width:', cameraCanvas.width);
-//             console.log('Canvas Height:', cameraCanvas.height);
-
-//             const imageData = cameraContext.getImageData(0, 0, cameraCanvas.width, cameraCanvas.height);
-
-//             // Adicione logs aqui para verificar o conteúdo da imagem
-//             console.log('Image Data:', imageData.data);
-
-//             const code = jsQR(imageData.data, imageData.width, imageData.height);
-
-//             if (code) {
-//                 drawLine(cameraContext, code.location.topLeftCorner, code.location.topRightCorner, "#FF3B58");
-//                 drawLine(cameraContext, code.location.topRightCorner, code.location.bottomRightCorner, "#FF3B58");
-//                 drawLine(cameraContext, code.location.bottomRightCorner, code.location.bottomLeftCorner, "#FF3B58");
-//                 drawLine(cameraContext, code.location.bottomLeftCorner, code.location.topLeftCorner, "#FF3B58");
-
-//                 console.log('QR Code Detected:', code.data); // Adicione um log aqui para o QR Code detectado
-
-//                 alert(`QR Code detectado: ${code.data}`);
-//                 window.open(code.data, '_blank');
-
-//                 video.pause();
-//                 video.srcObject.getTracks().forEach(track => track.stop());
-//                 video.style.display = 'none';
-//             } else {
-//                 requestAnimationFrame(tick);
-//             }
-//         } else {
-//             requestAnimationFrame(tick);
-//         }
-//     }
-
-//     function drawLine(context, begin, end, color) {
-//         context.beginPath();
-//         context.moveTo(begin.x, begin.y);
-//         context.lineTo(end.x, end.y);
-//         context.lineWidth = 4;
-//         context.strokeStyle = color;
-//         context.stroke();
-//     }
-// }
-// Função para iniciar o leitor de QR Code
-function startQRCodeScanner() {
+        function startQRCodeScanner() {
             const html5QrCode = new Html5Qrcode("reader");
 
             html5QrCode.start(
@@ -532,12 +432,10 @@ function startQRCodeScanner() {
                     qrbox: 250 // Tamanho da caixa de leitura do QR Code
                 },
                 (decodedText, decodedResult) => {
-                    // Callback quando um QR Code é detectado
                     document.getElementById('result').innerText = `QR Code detectado: ${decodedText}`;
                     html5QrCode.stop(); // Parar a leitura após detectar um QR Code
                 },
                 (errorMessage) => {
-                    // Callback quando há um erro na leitura
                     console.log(`Erro de leitura: ${errorMessage}`);
                 }
             ).catch(err => {
@@ -545,10 +443,8 @@ function startQRCodeScanner() {
             });
         }
 
-        // Iniciar o scanner quando a página carregar
-        window.onload = startQRCodeScanner;
-
-        document.getElementById('cameraButton').addEventListener('click', startCamera);
+        document.getElementById('cameraButton').addEventListener('click', startQRCodeScanner);
     </script>
+
 </body>
 </html>
