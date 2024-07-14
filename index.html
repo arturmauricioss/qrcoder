@@ -283,10 +283,10 @@ img {
                     </div>
                     <button type="submit">Gerar QR Code</button>
                     <button id="testButton" type="button">Abrir QR Code</button>                    
-                    <button id="cameraButton">Usar Câmera</button>
-
+                    <button id="cameraButton" type="button" onclick="startCamera()">Usar Câmera</button>
                     <video id="video" style="display: none; width: 100%; max-width: 600px;"></video>
                     <canvas id="cameraCanvas" style="display: none;"></canvas>
+                    
                 </div>
             </form>
             
@@ -320,6 +320,7 @@ img {
     <input type="file" id="uploadFile" class="hidden" accept="image/*">
     <script src="https://cdn.jsdelivr.net/npm/qrcode@1.4.4/build/qrcode.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.1/dist/jsqr.min.js"></script>
+    
     
     <script>
         document.getElementById('qrForm').addEventListener('submit', function(event) {
