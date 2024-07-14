@@ -283,9 +283,8 @@ img {
                     </div>
                     <button type="submit">Gerar QR Code</button>
                     <button id="testButton" type="button">Abrir QR Code</button>                    
-                    <button id="cameraButton" type="button" onclick="startCamera()">Usar Câmera</button>
-                    <video id="video" style="display: none; width: 100%; max-width: 600px;"></video>
-                    <canvas id="cameraCanvas" style="display: none;"></canvas>
+                    <video id="preview" style="width: 100%; max-width: 600px;"></video>
+                    <button id="startCameraButton">Iniciar Câmera</button>
                     
                 </div>
             </form>
@@ -321,7 +320,7 @@ img {
     <script src="https://cdn.jsdelivr.net/npm/qrcode@1.4.4/build/qrcode.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.1/dist/jsqr.min.js"></script>
     
-    
+    <script src="https://cdn.jsdelivr.net/npm/instascan@1.0.0/instascan.min.js"></script>
     <script>
         document.getElementById('qrForm').addEventListener('submit', function(event) {
             event.preventDefault();
@@ -453,73 +452,91 @@ img {
                 window.URL.revokeObjectURL(url);
             });
         }
-        function startCamera() {
-    const video = document.getElementById('video');
-    const cameraCanvas = document.getElementById('cameraCanvas');
-    const cameraContext = cameraCanvas.getContext('2d');
+        const scanner = new Instascan.Scanner({ video: document.getElementById('preview') });
 
-    navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } })
-        .then(stream => {
-            video.srcObject = stream;
-            video.setAttribute('playsinline', true); // Necessário para iOS Safari
-            video.style.display = 'block';
-            cameraCanvas.style.display = 'none';
+scanner.addListener('scan', function (content) {
+  window.open(content, '_blank'); // Abre o link em uma nova aba
+});
 
-            video.play();
-            requestAnimationFrame(tick);
-        }).catch(err => {
-            console.error('Erro ao acessar a câmera: ', err);
-        });
-
-    function tick() {
-        if (video.readyState === video.HAVE_ENOUGH_DATA) {
-            cameraCanvas.width = video.videoWidth;
-            cameraCanvas.height = video.videoHeight;
-            cameraContext.drawImage(video, 0, 0, cameraCanvas.width, cameraCanvas.height);
-
-            // Adicione logs aqui para verificar o conteúdo do canvas
-            console.log('Video ReadyState:', video.readyState);
-            console.log('Canvas Width:', cameraCanvas.width);
-            console.log('Canvas Height:', cameraCanvas.height);
-
-            const imageData = cameraContext.getImageData(0, 0, cameraCanvas.width, cameraCanvas.height);
-
-            // Adicione logs aqui para verificar o conteúdo da imagem
-            console.log('Image Data:', imageData.data);
-
-            const code = jsQR(imageData.data, imageData.width, imageData.height);
-
-            if (code) {
-                drawLine(cameraContext, code.location.topLeftCorner, code.location.topRightCorner, "#FF3B58");
-                drawLine(cameraContext, code.location.topRightCorner, code.location.bottomRightCorner, "#FF3B58");
-                drawLine(cameraContext, code.location.bottomRightCorner, code.location.bottomLeftCorner, "#FF3B58");
-                drawLine(cameraContext, code.location.bottomLeftCorner, code.location.topLeftCorner, "#FF3B58");
-
-                console.log('QR Code Detected:', code.data); // Adicione um log aqui para o QR Code detectado
-
-                alert(`QR Code detectado: ${code.data}`);
-                window.open(code.data, '_blank');
-
-                video.pause();
-                video.srcObject.getTracks().forEach(track => track.stop());
-                video.style.display = 'none';
-            } else {
-                requestAnimationFrame(tick);
-            }
-        } else {
-            requestAnimationFrame(tick);
-        }
+document.getElementById('startCameraButton').addEventListener('click', function () {
+  Instascan.Camera.getCameras().then(function (cameras) {
+    if (cameras.length > 0) {
+      scanner.start(cameras[0]); // Usa a primeira câmera disponível
+    } else {
+      console.error('Nenhuma câmera encontrada.');
     }
+  }).catch(function (e) {
+    console.error('Erro ao acessar a câmera:', e);
+  });
+});
 
-    function drawLine(context, begin, end, color) {
-        context.beginPath();
-        context.moveTo(begin.x, begin.y);
-        context.lineTo(end.x, end.y);
-        context.lineWidth = 4;
-        context.strokeStyle = color;
-        context.stroke();
-    }
-}
+//         function startCamera() {
+//     const video = document.getElementById('video');
+//     const cameraCanvas = document.getElementById('cameraCanvas');
+//     const cameraContext = cameraCanvas.getContext('2d');
+
+//     navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } })
+//         .then(stream => {
+//             video.srcObject = stream;
+//             video.setAttribute('playsinline', true); // Necessário para iOS Safari
+//             video.style.display = 'block';
+//             cameraCanvas.style.display = 'none';
+
+//             video.play();
+//             requestAnimationFrame(tick);
+//         }).catch(err => {
+//             console.error('Erro ao acessar a câmera: ', err);
+//         });
+
+//     function tick() {
+//         if (video.readyState === video.HAVE_ENOUGH_DATA) {
+//             cameraCanvas.width = video.videoWidth;
+//             cameraCanvas.height = video.videoHeight;
+//             cameraContext.drawImage(video, 0, 0, cameraCanvas.width, cameraCanvas.height);
+
+//             // Adicione logs aqui para verificar o conteúdo do canvas
+//             console.log('Video ReadyState:', video.readyState);
+//             console.log('Canvas Width:', cameraCanvas.width);
+//             console.log('Canvas Height:', cameraCanvas.height);
+
+//             const imageData = cameraContext.getImageData(0, 0, cameraCanvas.width, cameraCanvas.height);
+
+//             // Adicione logs aqui para verificar o conteúdo da imagem
+//             console.log('Image Data:', imageData.data);
+
+//             const code = jsQR(imageData.data, imageData.width, imageData.height);
+
+//             if (code) {
+//                 drawLine(cameraContext, code.location.topLeftCorner, code.location.topRightCorner, "#FF3B58");
+//                 drawLine(cameraContext, code.location.topRightCorner, code.location.bottomRightCorner, "#FF3B58");
+//                 drawLine(cameraContext, code.location.bottomRightCorner, code.location.bottomLeftCorner, "#FF3B58");
+//                 drawLine(cameraContext, code.location.bottomLeftCorner, code.location.topLeftCorner, "#FF3B58");
+
+//                 console.log('QR Code Detected:', code.data); // Adicione um log aqui para o QR Code detectado
+
+//                 alert(`QR Code detectado: ${code.data}`);
+//                 window.open(code.data, '_blank');
+
+//                 video.pause();
+//                 video.srcObject.getTracks().forEach(track => track.stop());
+//                 video.style.display = 'none';
+//             } else {
+//                 requestAnimationFrame(tick);
+//             }
+//         } else {
+//             requestAnimationFrame(tick);
+//         }
+//     }
+
+//     function drawLine(context, begin, end, color) {
+//         context.beginPath();
+//         context.moveTo(begin.x, begin.y);
+//         context.lineTo(end.x, end.y);
+//         context.lineWidth = 4;
+//         context.strokeStyle = color;
+//         context.stroke();
+//     }
+// }
 
 
         document.getElementById('cameraButton').addEventListener('click', startCamera);
