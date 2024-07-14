@@ -281,7 +281,7 @@ img {
     <p id="result">Nenhum QR Code detectado ainda.</p>
     <div class="container">
         <div class="one">
-            <h1>Alon QR
+            <h1>An QR
                 <!-- <a href="https://arturmauricioss.github.io/" target="_blank">
                 <span id="help">?</span></a> -->
             </h1>
@@ -296,10 +296,7 @@ img {
                     </div>
                     <button type="submit">Gerar QR Code</button>
                     <button id="testButton" type="button">Abrir QR Code</button>                    
-                    <div id="reader" style="width: 100%; height: 300px;"></div>
-                    <p id="result">Nenhum QR Code detectado ainda.</p>
-                
-                    <button id="cameraButton">Iniciar Câmera</button>
+                    <button id="cameraButton" type="button">Iniciar Câmera</button>
                     
                 </div>
             </form>
@@ -320,6 +317,8 @@ img {
             </div>
         </div>
     </div>
+    <div id="reader" style="width: 100%; height: 300px;"></div>
+    <p id="result">Nenhum QR Code detectado ainda.</p>
     <div class="help-section" id="helpSection">
         <h2>Como Utilizar</h2>
         <ul>
@@ -429,8 +428,8 @@ img {
                 window.URL.revokeObjectURL(url);
             });
         }
-
-        function startQRCodeScanner() {
+ // Função para iniciar o scanner de QR Code
+ function startQRCodeScanner() {
             const html5QrCode = new Html5Qrcode("reader");
 
             html5QrCode.start(
@@ -440,10 +439,12 @@ img {
                     qrbox: 250 // Tamanho da caixa de leitura do QR Code
                 },
                 (decodedText, decodedResult) => {
+                    // Callback quando um QR Code é detectado
                     document.getElementById('result').innerText = `QR Code detectado: ${decodedText}`;
                     html5QrCode.stop(); // Parar a leitura após detectar um QR Code
                 },
                 (errorMessage) => {
+                    // Callback quando há um erro na leitura
                     console.log(`Erro de leitura: ${errorMessage}`);
                 }
             ).catch(err => {
@@ -451,7 +452,9 @@ img {
             });
         }
 
+        // Iniciar o scanner quando o botão for clicado
         document.getElementById('cameraButton').addEventListener('click', startQRCodeScanner);
+    
     </script>
 
 </body>
