@@ -433,7 +433,7 @@ img {
         function downloadQRCode() {
             const qrCanvas = document.getElementById('qrCanvas');
             const link = document.getElementById('link').value.replace(/[^a-z0-9]/gi, '_').toLowerCase();
-            const fileName = `qrcode_${link}.png`;
+            const fileName = `avallonqrcode_${link}.png`;
     
             qrCanvas.toBlob(function(blob) {
                 const url = window.URL.createObjectURL(blob);
