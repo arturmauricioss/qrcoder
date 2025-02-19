@@ -1,0 +1,242 @@
+:root {
+  --c11: #226d43;
+  --c22: #6a0dad;
+  --c33: #1e90ff;
+  --c44: #000000;
+  --c55: #ffffff;
+  --c66: #333333;
+  --c77: #999999;
+  --c88: #3a6b6a;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  background-color: #eee;
+  color: var(--c22);
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  min-height: 100vh;
+  position: relative;
+  text-align: center;
+}
+
+.title-container {
+  text-align: center;
+  margin-top: 20px;
+}
+#avallonTitle {
+  color: #125b12;
+}
+#help {
+  color: #125b12;
+  cursor: pointer;
+}
+h1 {
+  color: var(--c22); /* Roxo escuro */
+  margin: 10px 0;
+  text-shadow: 0px 0px 1px #00000055;
+}
+
+p {
+  text-shadow: 0px 0px 1px #00000055;
+}
+
+label {
+  color: #225522;
+  text-shadow: 0px 0px 1px #00000055;
+  font-size: 1.2em;
+}
+
+form {
+  background-color: #cdd8e6;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  display: inline-block;
+  padding: 20px;
+  border-bottom: 1px solid var(--c22);
+  border-right: 2px solid var(--c22);
+}
+
+input {
+  padding: 10px;
+  font-size: 16px;
+  width: 100%;
+  max-width: 300px;
+  border: 2px solid #125b12; /* Verde */
+  border-radius: 4px;
+  box-sizing: border-box;
+  margin-top: 10px;
+}
+
+input:focus {
+  border-color: #4a148c; /* Roxo escuro */
+  outline: none; /* Remove o contorno padrão do navegador */
+}
+
+.file-input-container {
+  position: relative;
+  width: 100%;
+  max-width: 250px;
+}
+
+.file-input {
+  position: absolute;
+  left: 0;
+  top: 0;
+  opacity: 0;
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
+}
+
+.file-label {
+  display: inline-block;
+  padding: 10px;
+  background-color: #125b12; /* Verde */
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-size: 16px;
+  cursor: pointer;
+  text-align: center;
+  width: 150px;
+  box-sizing: border-box;
+  /* Espaço abaixo do botão "Escolher ícone" */
+}
+
+.file-label:hover {
+  background-color: #7b1fa2; /* Verde mais escuro */
+}
+button {
+  background-color: #125b12; /* Verde */
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  margin-top: 10px;
+  margin-bottom: 0px;
+  transition: background-color 0.3s ease;
+  max-width: 250px;
+}
+
+button:hover {
+  background-color: #7b1fa2; /* Roxo mais escuro */
+}
+
+img {
+  margin-top: 20px;
+  border: 2px solid #4caf50; /* Verde */
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  max-width: 100%;
+  height: auto;
+}
+
+.hidden {
+  display: none;
+}
+
+@media (max-width: 300px) {
+  .container {
+    flex-direction: column;
+    align-items: center;
+  }
+  form {
+    padding: 15px;
+    width: 90%;
+  }
+  input,
+  button,
+  .file-label {
+    width: 100%;
+  }
+}
+
+.container {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 10px;
+  width: 90%;
+  max-width: 1200px;
+  margin: 0 auto;
+  flex-wrap: wrap;
+}
+
+.one,
+.two {
+  flex: 1;
+  margin: 10px;
+  min-width: 200px;
+}
+
+.help-section {
+  background-color: #cdd8e6;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 20px;
+  margin: 20px 0;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  width: 90%;
+  max-width: 1200px;
+  border-bottom: 1px solid var(--c22);
+  border-right: 2px solid var(--c22);
+}
+.help-section p {
+  color: var(--c44);
+  margin-bottom: 10px;
+  font-size: 1.5em;
+  text-decoration: underline solid var(--c22);
+}
+
+.help-section ul {
+  list-style: disc;
+  padding-left: 20px;
+  text-align: left;
+}
+
+.help-section ul li {
+  margin-bottom: 10px;
+  color: var(--c66);
+  font-weight: 600;
+  text-align: justify;
+}
+.button-container {
+  display: flex;
+  flex-direction: column; /* Empilha os botões verticalmente */
+  align-items: center; /* Centraliza os botões horizontalmente */
+  margin-top: 10px; /* Espaço acima dos botões */
+}
+
+.button-container button,
+.file-label {
+  margin: 5px 0; /* Espaço entre os botões */
+  width: 100%; /* Faz com que os botões ocupem a largura total do contêiner pai */
+  max-width: 250px; /* Define uma largura máxima para os botões */
+}
+
+.button-container button {
+  background-color: #125b12; /* Verde */
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.button-container button:hover {
+  background-color: #7b1fa2; /* Roxo mais escuro */
+}
+.colorfulSpan {
+  color: var(--c22);
+  font-weight: bold;
+}
