@@ -1,18 +1,19 @@
+/* Nova paleta de cores moderna e harmônica */
 :root {
-  --c11: #226d43;
-  --c22: #6a0dad;
-  --c33: #1e90ff;
-  --c44: #000000;
-  --c55: #ffffff;
-  --c66: #333333;
-  --c77: #999999;
-  --c88: #3a6b6a;
+  --primary: #2c7a7b;
+  --secondary: #6b46c1;
+  --bg: #f7fafc;
+  --text-main: #2d3748;
+  --text-secondary: #4a5568;
+  --border: #cbd5e0;
+  --hover: #4c51bf;
+  --white: #ffffff;
 }
 
 body {
   font-family: Arial, sans-serif;
-  background-color: #eee;
-  color: var(--c22);
+  background-color: var(--bg);
+  color: var(--text-main);
   margin: 0;
   padding: 0;
   display: flex;
@@ -28,37 +29,36 @@ body {
   text-align: center;
   margin-top: 20px;
 }
-#avallonTitle {
-  color: #125b12;
-}
+
+#avallonTitle,
 #help {
-  color: #125b12;
+  color: var(--primary);
   cursor: pointer;
 }
+
 h1 {
-  color: var(--c22); /* Roxo escuro */
+  color: var(--secondary);
   margin: 10px 0;
-  text-shadow: 0px 0px 1px #00000055;
+  text-shadow: 0px 0px 1px #00000033;
 }
 
 p {
-  text-shadow: 0px 0px 1px #00000055;
+  text-shadow: 0px 0px 1px #00000033;
 }
 
 label {
-  color: #225522;
-  text-shadow: 0px 0px 1px #00000055;
+  color: var(--primary);
+  text-shadow: 0px 0px 1px #00000033;
   font-size: 1.2em;
 }
 
 form {
-  background-color: #cdd8e6;
+  background-color: var(--white);
   border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
   display: inline-block;
   padding: 20px;
-  border-bottom: 1px solid var(--c22);
-  border-right: 2px solid var(--c22);
+  border: 1px solid var(--border);
 }
 
 input {
@@ -66,15 +66,15 @@ input {
   font-size: 16px;
   width: 100%;
   max-width: 300px;
-  border: 2px solid #125b12; /* Verde */
+  border: 2px solid var(--primary);
   border-radius: 4px;
   box-sizing: border-box;
   margin-top: 10px;
 }
 
 input:focus {
-  border-color: #4a148c; /* Roxo escuro */
-  outline: none; /* Remove o contorno padrão do navegador */
+  border-color: var(--secondary);
+  outline: none;
 }
 
 .file-input-container {
@@ -96,8 +96,8 @@ input:focus {
 .file-label {
   display: inline-block;
   padding: 10px;
-  background-color: #125b12; /* Verde */
-  color: white;
+  background-color: var(--primary);
+  color: var(--white);
   border: none;
   border-radius: 4px;
   font-size: 16px;
@@ -105,15 +105,15 @@ input:focus {
   text-align: center;
   width: 150px;
   box-sizing: border-box;
-  /* Espaço abaixo do botão "Escolher ícone" */
 }
 
 .file-label:hover {
-  background-color: #7b1fa2; /* Verde mais escuro */
+  background-color: var(--hover);
 }
+
 button {
-  background-color: #125b12; /* Verde */
-  color: white;
+  background-color: var(--primary);
+  color: var(--white);
   border: none;
   border-radius: 4px;
   padding: 10px 20px;
@@ -126,14 +126,14 @@ button {
 }
 
 button:hover {
-  background-color: #7b1fa2; /* Roxo mais escuro */
+  background-color: var(--hover);
 }
 
 img {
   margin-top: 20px;
-  border: 2px solid #4caf50; /* Verde */
+  border: 2px solid var(--primary);
   border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
   max-width: 100%;
   height: auto;
 }
@@ -178,22 +178,21 @@ img {
 }
 
 .help-section {
-  background-color: #cdd8e6;
-  border: 1px solid #ccc;
+  background-color: var(--white);
+  border: 1px solid var(--border);
   border-radius: 8px;
   padding: 20px;
   margin: 20px 0;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
   width: 90%;
   max-width: 1200px;
-  border-bottom: 1px solid var(--c22);
-  border-right: 2px solid var(--c22);
 }
+
 .help-section p {
-  color: var(--c44);
+  color: var(--text-main);
   margin-bottom: 10px;
   font-size: 1.5em;
-  text-decoration: underline solid var(--c22);
+  text-decoration: underline solid var(--secondary);
 }
 
 .help-section ul {
@@ -204,27 +203,28 @@ img {
 
 .help-section ul li {
   margin-bottom: 10px;
-  color: var(--c66);
+  color: var(--text-secondary);
   font-weight: 600;
   text-align: justify;
 }
+
 .button-container {
   display: flex;
-  flex-direction: column; /* Empilha os botões verticalmente */
-  align-items: center; /* Centraliza os botões horizontalmente */
-  margin-top: 10px; /* Espaço acima dos botões */
+  flex-direction: column;
+  align-items: center;
+  margin-top: 10px;
 }
 
 .button-container button,
 .file-label {
-  margin: 5px 0; /* Espaço entre os botões */
-  width: 100%; /* Faz com que os botões ocupem a largura total do contêiner pai */
-  max-width: 250px; /* Define uma largura máxima para os botões */
+  margin: 5px 0;
+  width: 100%;
+  max-width: 250px;
 }
 
 .button-container button {
-  background-color: #125b12; /* Verde */
-  color: white;
+  background-color: var(--primary);
+  color: var(--white);
   border: none;
   border-radius: 4px;
   padding: 10px 20px;
@@ -234,9 +234,10 @@ img {
 }
 
 .button-container button:hover {
-  background-color: #7b1fa2; /* Roxo mais escuro */
+  background-color: var(--hover);
 }
+
 .colorfulSpan {
-  color: var(--c22);
+  color: var(--secondary);
   font-weight: bold;
 }
